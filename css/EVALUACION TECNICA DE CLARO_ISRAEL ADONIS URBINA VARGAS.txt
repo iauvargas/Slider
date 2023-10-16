@@ -1,0 +1,139 @@
+keyla.davila1@claro.com.ni
+
+-- Crear la base de datos "claro" si aún no existe
+CREATE DATABASE IF NOT EXISTS claro;
+
+-- Usar la base de datos "claro"
+USE claro;
+
+-- la tabla "Marinero"
+CREATE TABLE Marinero (
+    sid INT PRIMARY KEY,
+    name VARCHAR(50),
+    rating INT,
+    age FLOAT
+);
+
+-- Tabla "Bote"
+CREATE TABLE Bote (
+    bid INT PRIMARY KEY,
+    name VARCHAR(50),
+    color VARCHAR(50)
+);
+
+-- tabla "Reserva" reserca cun sus propiedades
+CREATE TABLE Reserva (
+    sid INT,
+    bid INT,
+    date DATETIME,
+    FOREIGN KEY (sid) REFERENCES Marinero(sid),
+    FOREIGN KEY (bid) REFERENCES Bote(bid)
+);
+
+/* Insertamos los recors a las tablas que ya creamos segun
+el documento prueba tecnica - SQL*/
+
+	-- registros de la tabla Marinero
+INSERT INTO Marinero (sid, name, rating, age)
+VALUES
+    (22, 'Dustin', 7, 45),
+    (29, 'Brutus', 1, 33),
+    (31, 'Lubber', 8, 55.5),
+    (32, 'Andy', 8, 25.5),
+    (58, 'Rusty', 10, 35),
+    (64, 'Horatio', 7, 35),
+    (71, 'Zorba', 10, 16),
+    (74, 'Horatio', 9, 35),
+    (85, 'Art', 3, 25.5),
+    (95, 'Bob', 3, 65.5);
+
+	-- registros de la tabla Marinero
+INSERT INTO Bote (bid, name, color)
+VALUES
+    (101, 'Interlake', 'blue'),
+    (102, 'Interlake', 'red'),
+    (103, 'Clipper', 'green'),
+    (104, 'Marine', 'red');
+
+	-- registros de la tabla Marinero
+INSERT INTO Reserva (sid, bid, date)
+VALUES
+    (22, 101, '1998-10-10 00:00:00'),
+    (22, 102, '1998-10-10 00:00:00'),
+    (22, 103, '1998-10-08 00:00:00'),
+    (22, 104, '1998-10-07 00:00:00'),
+    (31, 102, '1998-11-10 00:00:00'),
+    (31, 103, '1998-11-06 00:00:00'),
+    (31, 104, '1998-11-12 00:00:00'),
+    (64, 101, '1998-09-05 00:00:00'),
+    (64, 102, '1998-09-08 00:00:00'),
+    (74, 103, '1998-09-08 00:00:00');
+
+/* En este espacio detallare las consultas indicadas en el documento 
+Prueba tecnica - SQL*/
+
+/*1. Consulta del a ISRAEL ADONIS URBINA VARGAS*/
+  SELECT sid, name, rating FROM Marinero WHERE age > 18;
+
+/*2. Consulta del B ISRAEL ADONIS URBINA VARGAS*/
+  SELECT bid, name FROM Bote WHERE color NOT IN ('red', 'blue');
+
+/*3. Consulta del c ISRAEL ADONIS URBINA VARGAS*/
+
+ SELECT M.sid, M.name
+ FROM Marinero M
+ JOIN Reserva R ON M.sid = R.sid
+ JOIN Bote B ON R.bid = B.bid
+ WHERE B.name = 'Interlake';
+
+/*4. Consulta del D ISRAEL ADONIS URBINA VARGAS*/
+ SELECT
+    COUNT(*) AS cantidad_de_marineros,
+    SUM(age) AS sumatoria_de_edades,
+    AVG(age) AS promedio_de_edades
+ FROM Marinero;
+
+/*5. Consulta del E ISRAEL ADONIS URBINA VARGAS*/
+ SELECT name, COUNT(*) AS repeticiones
+ FROM Marinero
+ GROUP BY name;
+
+/*6. Consulta del F ISRAEL ADONIS URBINA VARGAS*/
+ SELECT M.sid, M.name, R.bid, B.color
+ FROM Marinero M
+ JOIN Reserva R ON M.sid = R.sid
+ JOIN Bote B ON R.bid = B.bid
+ WHERE B.color = 'red';
+
+/*7. Consulta del G ISRAEL ADONIS URBINA VARGAS*/
+ SELECT *
+ FROM Marinero
+ WHERE age > (SELECT AVG(age) FROM Marinero);
+
+/*8. Consulta del H ISRAEL ADONIS URBINA VARGAS*/
+ SELECT B.bid, B.name, B.color, COUNT(R.bid) AS veces_seleccionado
+ FROM Bote B
+ JOIN Reserva R ON B.bid = R.bid
+ GROUP BY B.bid, B.name, B.color
+ HAVING COUNT(R.bid) > 2;
+
+/*9. Consulta del i ISRAEL ADONIS URBINA VARGAS*/
+ SELECT M.*
+ FROM Marinero M
+ LEFT JOIN Reserva R ON M.sid = R.sid
+ WHERE R.sid IS NULL;
+
+/*10. Consulta del j ISRAEL ADONIS URBINA VARGAS*/
+SELECT M.sid, M.name
+FROM Marinero M
+WHERE NOT EXISTS (
+    SELECT B.bid
+    FROM Bote B
+    WHERE NOT EXISTS (
+        SELECT R.bid
+        FROM Reserva R
+        WHERE R.sid = M.sid AND R.bid = B.bid
+    )
+);
+
+--!Gracias por la oportunidad de permitirme formar parte del proceso de evaluacion.!
