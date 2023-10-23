@@ -1,3 +1,5 @@
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_ZjI1ZGVmYzUtOGU5MC00NDRhLWExOTktYWNlOWU1YTU4Yzcx%40thread.v2/0?context=%7b%22Tid%22%3a%224a261f89-8ec8-47cb-9e42-747c3eb3757f%22%2c%22Oid%22%3a%22e3c25012-f0e9-4dbf-a06d-1de5f7776b5e%22%7d
+
 keyla.davila1@claro.com.ni
 
 -- Crear la base de datos "claro" si aún no existe
